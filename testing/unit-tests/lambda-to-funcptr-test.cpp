@@ -24,7 +24,7 @@ TEST(lambda_to_funcptr_test, test_lambda_to_funcptr)
     const std::string simple_callback_message = "Simple callback message";
     const std::string complex_callback_message = "Complex callback message";
 
-    auto simple_callback_impl = [&]()
+    auto simple_callback_impl = [&]() -> void
     {
         std::cout << simple_callback_message << std::endl;
     };
@@ -41,11 +41,31 @@ TEST(lambda_to_funcptr_test, test_lambda_to_funcptr)
     using simple_callback_type = std::function<void(void)>;
     using complex_callback_type = std::function<int(const char*, double, void*)>;
 
-    std::cout << boost::core::demangle(typeid(simple_callback_impl).name()) << std::endl;
-    std::cout << boost::core::demangle(typeid(complex_callback_impl).name()) << std::endl;
+    std::cout << "Before:" << std::endl
+              << " * " << boost::core::demangle(typeid(simple_callback_impl).name()) << std::endl
+              << " * " << boost::core::demangle(typeid(complex_callback_impl).name()) << std::endl;
 
-    auto simple = get_funcptr<0>(std::function<void()>(simple_callback_impl));
-    std::cout << boost::core::demangle(typeid(simple).name()) << std::endl;
+    // TODO: can we do something like this?
+    //       get_funcptr<0, simple_callback_type>(simple_callback_impl)
+
+    auto simple_callback_ptr = get_funcptr<0>(simple_callback_type(simple_callback_impl));
+    auto complex_callback_ptr = get_funcptr<0>(complex_callback_type(complex_callback_impl));
+
+    std::cout << "After:" << std::endl
+              << " * " << boost::core::demangle(typeid(simple_callback_ptr).name()) << std::endl
+              << " * " << boost::core::demangle(typeid(complex_callback_ptr).name()) << std::endl;
+
+    testlib_set_simple_callback(
+        handle,
+        simple_callback_ptr);
+    testlib_set_complex_callback(
+        handle,
+        complex_callback_ptr);
+
+    testlib_call_simple_callback(handle);
+
+    int result = 0;
+    testlib_call_complex_callback(handle, "foo", 5.0, nullptr, &result);
 
     testlib_free_handle(&handle);
 }

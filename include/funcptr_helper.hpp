@@ -13,7 +13,6 @@
 
 namespace detail
 {
-
     // TODO: support enum unique IDs and other literals
     // TODO: thread-local storage to avoid collision
     template <size_t _UniqueId, typename _Res, typename... _ArgTypes>
@@ -56,13 +55,6 @@ namespace detail
 
             function_type _fcn;
     };
-}
-
-template<typename T>
-std::function<typename std::enable_if<std::is_function<T>::value, T>::type>
-make_function(T *t)
-{
-    return {t};
 }
 
 template <size_t _UniqueId, typename _Res, typename... _ArgTypes>
