@@ -13,8 +13,10 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+find_package(Boost 1.65)
+
 # Build test library
 add_subdirectory(c-testlib)
 
-ENABLE_TESTING()
-ADD_SUBDIRECTORY(testing/unit-tests)
+enable_testing()
+add_subdirectory(testing/unit-tests)
