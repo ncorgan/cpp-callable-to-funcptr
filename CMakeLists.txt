@@ -5,23 +5,13 @@
 # or copy at http://opensource.org/licenses/MIT)
 #
 
-########################################################################
 # CMake configuration
-########################################################################
-CMAKE_MINIMUM_REQUIRED(VERSION 3.8)
-PROJECT(cpp-lambda-to-funcptr CXX)
+cmake_minimum_required(VERSION 3.8)
+project(cpp-lambda-to-funcptr C CXX)
 
-IF(NOT DEFINED CMAKE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE "Release")
-ENDIF()
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
 
-########################################################################
-# Find Boost for boost::function testing
-########################################################################
-FIND_PACKAGE(Boost 1.65)
-IF(Boost_FOUND)
-    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-ENDIF()
-
-ENABLE_TESTING()
-ADD_SUBDIRECTORY(testing/unit-tests)
+# Build test library
+add_subdirectory(c-testlib)
