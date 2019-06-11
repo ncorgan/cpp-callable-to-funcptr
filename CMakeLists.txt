@@ -15,3 +15,6 @@ endif()
 
 # Build test library
 add_subdirectory(c-testlib)
+
+ENABLE_TESTING()
+ADD_SUBDIRECTORY(testing/unit-tests)
