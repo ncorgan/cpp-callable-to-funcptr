@@ -47,7 +47,7 @@ namespace detail
 
             static funcptr_helper& instance()
             {
-                static funcptr_helper _instance;
+                static thread_local funcptr_helper _instance;
                 return _instance;
             };
 
