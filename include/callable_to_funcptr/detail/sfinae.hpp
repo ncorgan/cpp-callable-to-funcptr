@@ -8,8 +8,21 @@
 #ifndef CALLABLE_TO_FUNCPTR_SFINAE_HPP
 #define CALLABLE_TO_FUNCPTR_SFINAE_HPP
 
+#ifndef CALLABLE_TO_FUNCPTR_HPP
+#error Do not include this file directly!
+#endif
+
+#if !defined(BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE)
+#error Internal macro BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE not defined!
+#endif
+#if !defined(END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE)
+#error Internal macro END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE not defined!
+#endif
+
 #include <functional>
 #include <type_traits>
+
+BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 namespace detail
 {
@@ -36,5 +49,7 @@ namespace detail
                      std::function<T>
                  >::type;
 }
+
+END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 #endif /* CALLABLE_TO_FUNCPTR_SFINAE_HPP */

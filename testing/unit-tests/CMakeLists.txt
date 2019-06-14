@@ -15,6 +15,10 @@ target_include_directories(callable_to_funcptr_test
     PRIVATE ${BOOST_INCLUDE_DIRS})
 target_link_libraries(callable_to_funcptr_test testlib gtest gtest_main)
 
+set_target_properties(
+    callable_to_funcptr_test
+    PROPERTIES COMPILE_FLAGS "-DCALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE=test_namespace")
+
 if(WIN32)
     add_test(
         callable_to_funcptr_test
