@@ -23,24 +23,22 @@
 
 #endif
 
-#include <callable_to_funcptr/detail/funcptr_helper.hpp>
-#include <callable_to_funcptr/detail/sfinae.hpp>
+#include "callable/callable.hpp"
+
+#include "detail/funcptr_helper.hpp"
+#include "detail/sfinae.hpp"
 
 #include <functional>
 
 BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
-template <size_t _UniqueId, typename _Res, typename... _ArgTypes>
-auto callable_to_funcptr(const std::function<_Res(_ArgTypes...)>& f)
+template <size_t _UniqueId, typename _Callable>
+auto callable_to_funcptr(const _Callable& f)
 {
-    detail::funcptr_helper<_UniqueId, _Res, _ArgTypes...>::bind(f);
-    return detail::funcptr_helper<_UniqueId, _Res, _ArgTypes...>::ptr();
-}
+    auto fcn = to_stdfunction(f);
 
-template <size_t _UniqueId, typename _Functor>
-auto callable_to_funcptr(_Functor f)
-{
-    return callable_to_funcptr<_UniqueId>(detail::to_func(f));
+    detail::funcptr_helper<_UniqueId, decltype(fcn)>::bind(fcn);
+    return detail::funcptr_helper<_UniqueId, decltype(fcn)>::ptr();
 }
 
 END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE

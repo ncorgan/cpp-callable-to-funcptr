@@ -8,7 +8,20 @@
 #if !defined(CALLABLE_MEMBER_FUNCTION_HPP_INCLUDED)
 #define CALLABLE_MEMBER_FUNCTION_HPP_INCLUDED
 
+#ifndef CALLABLE_TO_FUNCPTR_HPP
+#error Do not include this file directly!
+#endif
+
+#if !defined(BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE)
+#error Internal macro BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE not defined!
+#endif
+#if !defined(END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE)
+#error Internal macro END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE not defined!
+#endif
+
 #include "helpers.hpp"
+
+BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 namespace detail {
 
@@ -185,6 +198,8 @@ struct member_function_traits<Ret (Class::*)(Args...) const volatile && noexcept
 template<typename MemFunPtr>
 struct member_function_traits : detail::member_function_traits<detail::remove_cvref_t<MemFunPtr>> {
 };
+
+END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 #endif // CALLABLE_MEMBER_FUNCTION_HPP_INCLUDED
 

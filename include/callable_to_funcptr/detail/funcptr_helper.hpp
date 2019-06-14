@@ -19,7 +19,8 @@
 #error Internal macro END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE not defined!
 #endif
 
-#include <callable_to_funcptr/detail/sfinae.hpp>
+#include "../callable/callable.hpp"
+#include "sfinae.hpp"
 
 #include <cstdlib>
 #include <functional>
@@ -29,37 +30,32 @@ BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 namespace detail
 {
-    template <typename T> enable_function_if_functional<T>
-    to_func(T* t)
-    {
-        return {t};
-    }
-
     // TODO: support enum unique IDs and other literals
-    template <size_t _UniqueId, typename _Res, typename... _ArgTypes>
+    template <size_t _UniqueId, typename _Callable>
     struct funcptr_helper
     {
         public:
 
-            using function_type = std::function<_Res(_ArgTypes...)>;
+            using return_type = typename callable_traits<_Callable>::return_type;
+            using function_type = std::function<typename callable_traits<_Callable>::function_type>;
 
-            static inline void bind(const function_type& f)
+            static inline void
+            bind(const _Callable& f)
             {
-                instance()._fcn = f;
+                instance()._fcn = to_stdfunction(f);
             }
 
-            static inline void bind(function_type&& f)
-            {
-                instance().fcn.swap(f);
-            }
-
-            static inline _Res invoke(_ArgTypes... args)
+            template <typename... _ArgTypes>
+            static inline return_type
+            invoke(_ArgTypes... args)
             {
                 return instance()._fcn(args...);
             }
 
+            //using pointer_type = decltype(&funcptr_helper::invoke);
             using pointer_type = decltype(&funcptr_helper::invoke);
-            static pointer_type ptr()
+            static pointer_type
+            ptr()
             {
                 return &invoke;
             }

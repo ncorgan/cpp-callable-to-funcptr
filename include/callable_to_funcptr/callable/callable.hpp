@@ -8,12 +8,25 @@
 #if !defined(CALLABLE_CALLABLE_HPP_INCLUDED)
 #define CALLABLE_CALLABLE_HPP_INCLUDED
 
+#ifndef CALLABLE_TO_FUNCPTR_HPP
+#error Do not include this file directly!
+#endif
+
+#if !defined(BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE)
+#error Internal macro BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE not defined!
+#endif
+#if !defined(END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE)
+#error Internal macro END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE not defined!
+#endif
+
 #include <stddef.h>
 #include <functional>
 #include "helpers.hpp"
 #include "function.hpp"
 #include "member_function.hpp"
 #include "functor.hpp"
+
+BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 // There are three basic kinds of callable types
 // function types
@@ -64,5 +77,6 @@ std::function<typename callable_traits<Callable>::function_type> to_stdfunction(
 	return stdfun;
 }
 
-#endif // CALLABLE_CALLABLE_HPP_INCLUDED
+END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
+#endif // CALLABLE_CALLABLE_HPP_INCLUDED
