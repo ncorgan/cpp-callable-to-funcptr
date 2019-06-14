@@ -44,19 +44,19 @@ TEST(lambda_to_funcptr_test, test_lambda_to_funcptr)
     using complex_callback_type = std::function<int(const char*, double, void*)>;
 
     auto simple_callback_ptr = test_namespace::callable_to_funcptr<1>(foo);
-    //auto complex_callback_ptr = test_namespace::callable_to_funcptr<0>(complex_callback_type(complex_callback_impl));
+    auto complex_callback_ptr = test_namespace::callable_to_funcptr<0>(complex_callback_impl);
 
     testlib_set_simple_callback(
         handle,
         simple_callback_ptr);
-    /*testlib_set_complex_callback(
+    testlib_set_complex_callback(
         handle,
-        complex_callback_ptr);*/
+        complex_callback_ptr);
 
     testlib_call_simple_callback(handle);
 
     int result = 0;
-    //testlib_call_complex_callback(handle, "foo", 5.0, nullptr, &result);
+    testlib_call_complex_callback(handle, "foo", 5.0, nullptr, &result);
 
     testlib_free_handle(&handle);
 }
