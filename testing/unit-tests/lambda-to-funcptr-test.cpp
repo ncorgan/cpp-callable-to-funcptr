@@ -16,6 +16,8 @@
 #include <iostream>
 #include <string>
 
+void foo() {}
+
 TEST(lambda_to_funcptr_test, test_lambda_to_funcptr)
 {
     testlib_handle handle;
@@ -41,31 +43,25 @@ TEST(lambda_to_funcptr_test, test_lambda_to_funcptr)
     using simple_callback_type = std::function<void(void)>;
     using complex_callback_type = std::function<int(const char*, double, void*)>;
 
-    std::cout << "Before:" << std::endl
-              << " * " << boost::core::demangle(typeid(simple_callback_impl).name()) << std::endl
-              << " * " << boost::core::demangle(typeid(complex_callback_impl).name()) << std::endl;
-
-    // TODO: can we do something like this?
-    //       get_funcptr<0, simple_callback_type>(simple_callback_impl)
-
-    auto simple_callback_ptr = get_funcptr<0>(simple_callback_type(simple_callback_impl));
+    auto simple_callback_ptr = get_funcptr<1>(foo);
     auto complex_callback_ptr = get_funcptr<0>(complex_callback_type(complex_callback_impl));
 
-    std::cout << "After:" << std::endl
-              << " * " << boost::core::demangle(typeid(simple_callback_ptr).name()) << std::endl
-              << " * " << boost::core::demangle(typeid(complex_callback_ptr).name()) << std::endl;
+    //auto simple_callback_ptr = get_funcptr<0>(simple_callback_impl);
+
+    std::cout << detail::has_parentheses<decltype(foo)>::value << std::endl;
+    std::cout << detail::has_parentheses<decltype(simple_callback_impl)>::value << std::endl;
 
     testlib_set_simple_callback(
         handle,
         simple_callback_ptr);
-    testlib_set_complex_callback(
+    /*testlib_set_complex_callback(
         handle,
-        complex_callback_ptr);
+        complex_callback_ptr);*/
 
     testlib_call_simple_callback(handle);
 
     int result = 0;
-    testlib_call_complex_callback(handle, "foo", 5.0, nullptr, &result);
+    //testlib_call_complex_callback(handle, "foo", 5.0, nullptr, &result);
 
     testlib_free_handle(&handle);
 }
