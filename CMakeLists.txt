@@ -18,8 +18,5 @@ endif()
 
 find_package(Boost 1.65)
 
-# Build test library
-add_subdirectory(c-testlib)
-
 enable_testing()
-add_subdirectory(testing/unit-tests)
+add_subdirectory(testing)

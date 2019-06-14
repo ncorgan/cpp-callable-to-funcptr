@@ -9,20 +9,20 @@
 SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 ADD_SUBDIRECTORY(googletest/googletest)
 
-add_executable(lambda-to-funcptr-test lambda-to-funcptr-test.cpp)
-target_include_directories(lambda-to-funcptr-test
+add_executable(callable_to_funcptr_test callable_to_funcptr_test.cpp)
+target_include_directories(callable_to_funcptr_test
     PRIVATE ${CMAKE_SOURCE_DIR}/include
     PRIVATE ${BOOST_INCLUDE_DIRS})
-target_link_libraries(lambda-to-funcptr-test testlib gtest gtest_main)
+target_link_libraries(callable_to_funcptr_test testlib gtest gtest_main)
 
 if(WIN32)
     add_test(
-        lambda-to-funcptr-test
-        ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/lambda-to-funcptr-test.exe
+        callable_to_funcptr_test
+        ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/callable_to_funcptr_test.exe
     )
 else()
     add_test(
-        lambda-to-funcptr-test
-        ${CMAKE_CURRENT_BINARY_DIR}/lambda-to-funcptr-test
+        callable_to_funcptr_test
+        ${CMAKE_CURRENT_BINARY_DIR}/callable_to_funcptr_test
     )
 endif()

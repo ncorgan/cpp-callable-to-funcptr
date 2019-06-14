@@ -5,7 +5,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include "funcptr_helper.hpp"
+#include <callable_to_funcptr/callable_to_funcptr.hpp>
 
 #include "testlib.h"
 
@@ -43,10 +43,10 @@ TEST(lambda_to_funcptr_test, test_lambda_to_funcptr)
     using simple_callback_type = std::function<void(void)>;
     using complex_callback_type = std::function<int(const char*, double, void*)>;
 
-    auto simple_callback_ptr = get_funcptr<1>(foo);
-    auto complex_callback_ptr = get_funcptr<0>(complex_callback_type(complex_callback_impl));
+    auto simple_callback_ptr = callable_to_funcptr<1>(foo);
+    auto complex_callback_ptr = callable_to_funcptr<0>(complex_callback_type(complex_callback_impl));
 
-    //auto simple_callback_ptr = get_funcptr<0>(simple_callback_impl);
+    //auto simple_callback_ptr = callable_to_funcptr<0>(simple_callback_impl);
 
     std::cout << detail::has_parentheses<decltype(foo)>::value << std::endl;
     std::cout << detail::has_parentheses<decltype(simple_callback_impl)>::value << std::endl;

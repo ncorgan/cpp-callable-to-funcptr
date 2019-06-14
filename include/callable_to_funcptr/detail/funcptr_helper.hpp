@@ -5,8 +5,10 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#ifndef FUNCPTR_HELPER_HPP
-#define FUNCPTR_HELPER_HPP
+#ifndef CALLABLE_TO_FUNCPTR_FUNCPTR_HELPER_HPP
+#define CALLABLE_TO_FUNCPTR_FUNCPTR_HELPER_HPP
+
+#include <callable_to_funcptr/detail/sfinae.hpp>
 
 #include <cstdlib>
 #include <functional>
@@ -14,29 +16,6 @@
 
 namespace detail
 {
-    // https://stackoverflow.com/a/42481160
-    template <typename T>
-    class has_parentheses
-    {
-        private:
-            typedef char one;
-            typedef long two;
-
-            template <typename C> static one test(decltype(&C::operator()));
-            template <typename C> static two test(...);
-
-        public:
-            enum { value = (sizeof(test<T>(0)) == sizeof(char)) };
-    };
-
-    // Function pointers
-    template <typename T>
-    using enable_function_if_functional =
-        typename std::enable_if<
-                     std::is_function<T>::value,
-                     std::function<T>
-                 >::type;
-
     template <typename T> enable_function_if_functional<T>
     to_func(T* t)
     {
@@ -86,17 +65,4 @@ namespace detail
     };
 }
 
-template <size_t _UniqueId, typename _Res, typename... _ArgTypes>
-auto get_funcptr(const std::function<_Res(_ArgTypes...)>& f)
-{
-    detail::funcptr_helper<_UniqueId, _Res, _ArgTypes...>::bind(f);
-    return detail::funcptr_helper<_UniqueId, _Res, _ArgTypes...>::ptr();
-}
-
-template <size_t _UniqueId, typename _Functor>
-auto get_funcptr(_Functor f)
-{
-    return get_funcptr<_UniqueId>(detail::to_func(f));
-}
-
-#endif /* FUNCPTR_HELPER_HPP */
+#endif /* CALLABLE_TO_FUNCPTR_FUNCPTR_HELPER_HPP */
