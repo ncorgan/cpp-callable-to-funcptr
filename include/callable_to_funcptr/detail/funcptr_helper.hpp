@@ -30,29 +30,26 @@ BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 namespace detail
 {
-    // TODO: support enum unique IDs and other literals
-    template <size_t _UniqueId, typename _Callable>
+    template <size_t _UniqueId, typename _Res, typename... _Args>
     struct funcptr_helper
     {
         public:
 
-            using return_type = typename callable_traits<_Callable>::return_type;
-            using function_type = std::function<typename callable_traits<_Callable>::function_type>;
+            using return_type = _Res;
+            using function_type = std::function<_Res(_Args...)>;
 
             static inline void
-            bind(const _Callable& f)
+            bind(const function_type& f)
             {
-                instance()._fcn = to_stdfunction(f);
+                instance()._fcn = f;
             }
 
-            template <typename... _ArgTypes>
             static inline return_type
-            invoke(_ArgTypes... args)
+            invoke(_Args... args)
             {
                 return instance()._fcn(args...);
             }
 
-            //using pointer_type = decltype(&funcptr_helper::invoke);
             using pointer_type = decltype(&funcptr_helper::invoke);
             static pointer_type
             ptr()

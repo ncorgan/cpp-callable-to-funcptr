@@ -32,13 +32,17 @@
 
 BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
-template <size_t _UniqueId, typename _Callable>
-auto callable_to_funcptr(const _Callable& f)
+template <size_t _UniqueId, typename _Res, typename... _Args>
+auto callable_to_funcptr(const std::function<_Res(_Args...)>& f)
 {
-    auto fcn = to_stdfunction(f);
+    detail::funcptr_helper<_UniqueId, _Res, _Args...>::bind(f);
+    return detail::funcptr_helper<_UniqueId, _Res, _Args...>::ptr();
+}
 
-    detail::funcptr_helper<_UniqueId, decltype(fcn)>::bind(fcn);
-    return detail::funcptr_helper<_UniqueId, decltype(fcn)>::ptr();
+template <size_t _UniqueId, typename _Callable>
+auto callable_to_funcptr(_Callable f)
+{
+    return callable_to_funcptr<_UniqueId>(to_stdfunction(f));
 }
 
 END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
