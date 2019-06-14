@@ -19,7 +19,8 @@
 #error Internal macro END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE not defined!
 #endif
 
-#include "../callable/callable.hpp"
+#include "hash.hpp"
+#include "nameof.hpp"
 #include "sfinae.hpp"
 
 #include <cstdlib>
