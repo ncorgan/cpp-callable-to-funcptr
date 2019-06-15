@@ -31,7 +31,16 @@ BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 namespace detail
 {
-    template <size_t _UniqueId, typename _Res, typename... _Args>
+    template <size_t _UniqueId, typename T>
+    constexpr hash_t combine_user_and_type_hash()
+    {
+        constexpr auto type_name = NAMEOF_TYPE(T);
+        constexpr auto hash = fnv1a_hash(type_name.size(), &type_name[0]);
+
+        return (hash ^ _UniqueId);
+    }
+
+    template <hash_t _Hash, typename _Res, typename... _Args>
     struct funcptr_helper
     {
         public:
