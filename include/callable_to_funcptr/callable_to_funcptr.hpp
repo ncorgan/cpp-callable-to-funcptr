@@ -29,6 +29,7 @@
 #include "detail/sfinae.hpp"
 
 #include <functional>
+#include <type_traits>
 
 BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
@@ -46,6 +47,14 @@ template <size_t _UniqueId, typename _Callable>
 auto callable_to_funcptr(_Callable f)
 {
     return detail::callable_to_funcptr<detail::combine_user_and_type_hash<_UniqueId, _Callable>()>(to_stdfunction(f));
+}
+
+template <size_t _UniqueId, typename _Callable, typename _Res, typename... _Args>
+auto callable_to_funcptr(_Callable f)
+{
+    std::function<_Res(_Args...)> func(f);
+
+    return detail::callable_to_funcptr<detail::combine_user_and_type_hash<_UniqueId, _Callable>()>(func);
 }
 
 END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE

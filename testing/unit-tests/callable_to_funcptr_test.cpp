@@ -49,22 +49,58 @@ class callable_to_funcptr_test: public ::testing::Test
         }
 
         template <typename S, typename C>
+        void test_setting_testlib_callbacks_common(
+            S simple_callback_ptr,
+            C complex_callback_ptr)
+        {
+            std::cout << "After:" << std::endl
+                      << " * Simple:  " << boost::core::demangle(typeid(simple_callback_ptr).name()) << std::endl
+                      << " * Complex: " << boost::core::demangle(typeid(complex_callback_ptr).name()) << std::endl;
+
+            testlib_set_simple_callback(
+                m_handle,
+                simple_callback_ptr);
+            testlib_set_complex_callback(
+                m_handle,
+                complex_callback_ptr);
+
+            testlib_call_simple_callback(m_handle);
+
+            int result = 0;
+            testlib_call_complex_callback(
+                m_handle,
+                "Test string",
+                0.0,
+                nullptr,
+                &result);
+        }
+
+        template <typename S, typename C>
         void test_setting_testlib_callbacks(
             S simple_callback_input,
             C complex_callback_input)
         {
-            std::cout << "-----" << std::endl
-                      << boost::core::demangle(typeid(simple_callback_input).name()) << std::endl
-                      << "-----" << std::endl
-                      << boost::core::demangle(typeid(complex_callback_input).name()) << std::endl
-                      << "-----" << std::endl;
+            std::cout << "Before:" << std::endl
+                      << " * Simple:  " << boost::core::demangle(typeid(simple_callback_input).name()) << std::endl
+                      << " * Complex: " << boost::core::demangle(typeid(complex_callback_input).name()) << std::endl;
 
-            testlib_set_simple_callback(
-                m_handle,
-                test_namespace::callable_to_funcptr<0>(simple_callback_input));
-            /*testlib_set_complex_callback(
-                m_handle,
-                test_namespace::callable_to_funcptr<1>(complex_callback_input));*/
+            test_setting_testlib_callbacks_common(
+                test_namespace::callable_to_funcptr<0>(simple_callback_input),
+                test_namespace::callable_to_funcptr<1>(complex_callback_input));
+        }
+
+        template <typename S, typename C>
+        void test_setting_testlib_callbacks_with_types(
+            S simple_callback_input,
+            C complex_callback_input)
+        {
+            std::cout << "Before:" << std::endl
+                      << " * Simple:  " << boost::core::demangle(typeid(simple_callback_input).name()) << std::endl
+                      << " * Complex: " << boost::core::demangle(typeid(complex_callback_input).name()) << std::endl;
+
+            test_setting_testlib_callbacks_common(
+                test_namespace::callable_to_funcptr<0, S, void>(simple_callback_input),
+                test_namespace::callable_to_funcptr<1, C, int, const char*, double, void*>(complex_callback_input));
         }
 
         void testlib_simple_callback_member_function()
@@ -94,6 +130,22 @@ static int testlib_complex_callback_cpp_function(
     return 0;
 }
 
+struct testlib_simple_callback_functor
+{
+    void operator()() {}
+};
+
+struct testlib_complex_callback_functor
+{
+    int operator()(
+        const char* const_char_ptr,
+        double dbl,
+        void* void_ptr)
+    {
+        return 0;
+    }
+};
+
 //
 // Tests below
 //
@@ -110,6 +162,13 @@ TEST_F(callable_to_funcptr_test, cpp_funcptr)
     test_setting_testlib_callbacks(
         &testlib_simple_callback_cpp_function,
         &testlib_complex_callback_cpp_function);
+}
+
+TEST_F(callable_to_funcptr_test, functor)
+{
+    /*test_setting_testlib_callbacks(
+        &testlib_simple_callback_functor,
+        &testlib_complex_callback_functor);*/
 }
 
 TEST_F(callable_to_funcptr_test, noncapturing_lambda)
@@ -180,13 +239,8 @@ TEST_F(callable_to_funcptr_test, std_bind)
                                         std::placeholders::_1,
                                         std::placeholders::_2,
                                         std::placeholders::_3);
-            std::cout << "-----" << std::endl
-                      << boost::core::demangle(typeid(simple_callback_std_bind).name()) << std::endl
-                      << "-----" << std::endl
-                      << boost::core::demangle(typeid(complex_callback_std_bind).name()) << std::endl
-                      << "-----" << std::endl;
 
-    test_setting_testlib_callbacks(
+    test_setting_testlib_callbacks_with_types(
         simple_callback_std_bind,
         complex_callback_std_bind);
 }
@@ -206,4 +260,17 @@ TEST_F(callable_to_funcptr_test, boost_function)
 
 TEST_F(callable_to_funcptr_test, boost_bind)
 {
+    auto simple_callback_boost_bind = boost::bind(
+                                          &callable_to_funcptr_test::testlib_simple_callback_member_function,
+                                          this);
+    auto complex_callback_boost_bind = boost::bind(
+                                          &callable_to_funcptr_test::testlib_complex_callback_member_function,
+                                          this,
+                                          boost::placeholders::_1,
+                                          boost::placeholders::_2,
+                                          boost::placeholders::_3);
+
+    test_setting_testlib_callbacks_with_types(
+        simple_callback_boost_bind,
+        complex_callback_boost_bind);
 }
