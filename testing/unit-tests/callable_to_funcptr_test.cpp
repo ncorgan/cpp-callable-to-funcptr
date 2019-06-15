@@ -19,21 +19,6 @@
 #include <iostream>
 #include <string>
 
-extern "C" {
-
-    void testlib_simple_callback_c_function()
-    {
-    }
-
-    int testlib_complex_callback_c_function(
-        const char* const_char_ptr,
-        double dbl,
-        void* void_ptr)
-    {
-        return 0;
-    }
-}
-
 class callable_to_funcptr_test: public ::testing::Test
 {
     public:
@@ -118,11 +103,11 @@ class callable_to_funcptr_test: public ::testing::Test
         testlib_handle m_handle;
 };
 
-static void testlib_simple_callback_cpp_function()
+static void testlib_simple_callback_c_function()
 {
 }
 
-static int testlib_complex_callback_cpp_function(
+static int testlib_complex_callback_c_function(
     const char* const_char_ptr,
     double dbl,
     void* void_ptr)
@@ -157,32 +142,25 @@ TEST_F(callable_to_funcptr_test, c_funcptr)
         &testlib_complex_callback_c_function);
 }
 
-TEST_F(callable_to_funcptr_test, cpp_funcptr)
-{
-    test_setting_testlib_callbacks(
-        &testlib_simple_callback_cpp_function,
-        &testlib_complex_callback_cpp_function);
-}
-
 TEST_F(callable_to_funcptr_test, functor)
 {
-    /*test_setting_testlib_callbacks(
-        &testlib_simple_callback_functor,
-        &testlib_complex_callback_functor);*/
+    test_setting_testlib_callbacks(
+        testlib_simple_callback_functor(),
+        testlib_complex_callback_functor());
 }
 
 TEST_F(callable_to_funcptr_test, noncapturing_lambda)
 {
     auto simple_callback_lambda = []()
     {
-        testlib_simple_callback_cpp_function();
+        testlib_simple_callback_c_function();
     };
     auto complex_callback_lambda = [](
         const char* const_char_ptr,
         double dbl,
         void* void_ptr) -> int
     {
-        return testlib_complex_callback_cpp_function(
+        return testlib_complex_callback_c_function(
                    const_char_ptr,
                    dbl,
                    void_ptr);
@@ -220,8 +198,8 @@ TEST_F(callable_to_funcptr_test, std_function)
     using simple_callback_t = std::function<void(void)>;
     using complex_callback_t = std::function<int(const char*, double, void*)>;
 
-    simple_callback_t simple_callback_std_function(testlib_simple_callback_cpp_function);
-    complex_callback_t complex_callback_std_function(testlib_complex_callback_cpp_function);
+    simple_callback_t simple_callback_std_function(testlib_simple_callback_c_function);
+    complex_callback_t complex_callback_std_function(testlib_complex_callback_c_function);
 
     test_setting_testlib_callbacks(
         simple_callback_std_function,
@@ -250,8 +228,8 @@ TEST_F(callable_to_funcptr_test, boost_function)
     using simple_callback_t = boost::function<void(void)>;
     using complex_callback_t = boost::function<int(const char*, double, void*)>;
 
-    simple_callback_t simple_callback_boost_function(testlib_simple_callback_cpp_function);
-    complex_callback_t complex_callback_boost_function(testlib_complex_callback_cpp_function);
+    simple_callback_t simple_callback_boost_function(testlib_simple_callback_c_function);
+    complex_callback_t complex_callback_boost_function(testlib_complex_callback_c_function);
 
     test_setting_testlib_callbacks(
         simple_callback_boost_function,

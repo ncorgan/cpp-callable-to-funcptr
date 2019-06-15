@@ -54,6 +54,12 @@ namespace detail
                 instance()._fcn = f;
             }
 
+            static inline void
+            bind(function_type&& f)
+            {
+                instance()._fcn.swap(f);
+            }
+
             static inline return_type
             invoke(_Args... args)
             {

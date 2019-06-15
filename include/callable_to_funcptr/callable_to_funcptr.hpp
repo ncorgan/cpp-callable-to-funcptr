@@ -41,6 +41,13 @@ namespace detail
         detail::funcptr_helper<hash, _Res, _Args...>::bind(f);
         return detail::funcptr_helper<hash, _Res, _Args...>::ptr();
     }
+
+    template <hash_t hash, typename _Res, typename... _Args>
+    auto callable_to_funcptr(std::function<_Res(_Args...)>&& f)
+    {
+        detail::funcptr_helper<hash, _Res, _Args...>::bind(std::move(f));
+        return detail::funcptr_helper<hash, _Res, _Args...>::ptr();
+    }
 }
 
 template <size_t _UniqueId, typename _Callable>
@@ -54,7 +61,7 @@ auto callable_to_funcptr(_Callable f)
 {
     std::function<_Res(_Args...)> func(f);
 
-    return detail::callable_to_funcptr<detail::combine_user_and_type_hash<_UniqueId, _Callable>()>(func);
+    return detail::callable_to_funcptr<detail::combine_user_and_type_hash<_UniqueId, _Callable>()>(std::move(func));
 }
 
 END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
