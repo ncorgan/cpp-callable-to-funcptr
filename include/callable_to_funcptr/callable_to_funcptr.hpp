@@ -31,6 +31,8 @@
 
 BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
+// TODO: is there a way to specialize function pointers to avoid the hashing, etc?
+
 template <size_t _UniqueId, typename _Callable>
 auto callable_to_funcptr(_Callable f)
 {
