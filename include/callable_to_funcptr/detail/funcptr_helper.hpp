@@ -86,6 +86,14 @@ namespace detail
 
             function_type _fcn;
     };
+
+    template <hash_t hash, typename _Res, typename... _Args>
+    auto stdfunction_to_funcptr(std::function<_Res(_Args...)>&& f)
+    {
+        assert(f);
+        detail::funcptr_helper<hash, _Res, _Args...>::bind(std::move(f));
+        return detail::funcptr_helper<hash, _Res, _Args...>::ptr();
+    }
 }
 
 END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
