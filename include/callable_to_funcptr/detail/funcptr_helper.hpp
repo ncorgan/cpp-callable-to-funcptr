@@ -22,6 +22,7 @@
 #include "hash.hpp"
 #include "nameof.hpp"
 
+#include <cassert>
 #include <cstdlib>
 #include <functional>
 #include <type_traits>
@@ -62,6 +63,7 @@ namespace detail
             static inline return_type
             invoke(_Args... args)
             {
+                assert(instance()._fcn);
                 return instance()._fcn(args...);
             }
 
