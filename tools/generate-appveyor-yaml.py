@@ -56,7 +56,7 @@ if __name__ == "__main__":
         "build_script": [
             "mkdir build",
             "cd build",
-            "cmake -G \"%GENERATOR_NAME%\" -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=C:/Libraries/boost_%BOOST_VERSION% ..",
+            "cmake -G \"%GENERATOR_NAME%\" -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=C:/Libraries/boost_%BOOST_VERSION% -DMANUALLY_SET_STANDARD_FLAGS=ON ..",
             "cmake --build . --config \"Release\"",
             "ctest --output-on-failure"
         ]

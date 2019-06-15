@@ -78,7 +78,7 @@ if __name__ == "__main__":
         "script": [
             "mkdir build",
             "cd build",
-            "STD=${std} cmake ..",
+            "STD=${std} cmake -DMANUALLY_SET_STANDARD_FLAGS=ON ..",
             "make",
             "ctest --output-on-failure"
         ]
