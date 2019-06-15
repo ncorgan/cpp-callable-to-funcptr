@@ -45,7 +45,7 @@ namespace detail
 template <size_t _UniqueId, typename _Callable>
 auto callable_to_funcptr(_Callable f)
 {
-    return detail::callable_to_funcptr<detail::combine_user_and_type_hash<_UniqueId, _Callable>()>(to_stdfunction(f)); 
+    return detail::callable_to_funcptr<detail::combine_user_and_type_hash<_UniqueId, _Callable>()>(to_stdfunction(f));
 }
 
 END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE

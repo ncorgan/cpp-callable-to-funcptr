@@ -44,7 +44,14 @@ TEST(lambda_to_funcptr_test, test_lambda_to_funcptr)
     using complex_callback_type = std::function<int(const char*, double, void*)>;
 
     auto simple_callback_ptr = test_namespace::callable_to_funcptr<1>(foo);
+
+
+    std::cout << boost::core::demangle(typeid(complex_callback_impl).name()) << std::endl << std::endl;
+
+
     auto complex_callback_ptr = test_namespace::callable_to_funcptr<0>(complex_callback_impl);
+
+    std::cout << boost::core::demangle(typeid(complex_callback_ptr).name()) << std::endl << std::endl;
 
     testlib_set_simple_callback(
         handle,
