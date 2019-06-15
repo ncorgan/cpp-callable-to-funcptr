@@ -21,7 +21,6 @@
 
 #include "hash.hpp"
 #include "nameof.hpp"
-#include "sfinae.hpp"
 
 #include <cstdlib>
 #include <functional>

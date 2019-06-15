@@ -5,8 +5,8 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#ifndef CALLABLE_TO_FUNCPTR_SFINAE_HPP
-#define CALLABLE_TO_FUNCPTR_SFINAE_HPP
+#ifndef CALLABLE_TO_FUNCPTR_HASH_HPP
+#define CALLABLE_TO_FUNCPTR_HASH_HPP
 
 #ifndef CALLABLE_TO_FUNCPTR_HPP
 #error Do not include this file directly!
@@ -47,4 +47,4 @@ namespace detail
 
 END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
-#endif /* CALLABLE_TO_FUNCPTR_SFINAE_HPP */
+#endif /* CALLABLE_TO_FUNCPTR_HASH_HPP */

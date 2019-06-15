@@ -26,7 +26,6 @@
 #include "callable/callable.hpp"
 
 #include "detail/funcptr_helper.hpp"
-#include "detail/sfinae.hpp"
 
 #include <functional>
 #include <type_traits>
