@@ -36,6 +36,11 @@ auto callable_to_funcptr(_Callable f)
     return detail::stdfunction_to_funcptr<detail::template_hash<_UniqueId, _Callable>()>(std::move(func));
 }
 
+#define CALLABLE_TO_FUNCPTR(f) \
+    CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::callable_to_funcptr< \
+        CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::detail::hash_location(__FILE__, __LINE__), \
+        decltype(f)>(f)
+
 END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 #endif /* CALLABLE_TO_FUNCPTR_HPP */

@@ -369,3 +369,13 @@ TEST(callable_to_funcptr_test, test_thread_safety)
         ASSERT_EQ(4, four_output) << "iteration " << (i+1);
     }
 }
+
+TEST(callable_to_funcptr_test, test_location_macro)
+{
+    auto foo = [](int, const char*) -> void
+    {
+        return;
+    };
+
+    auto wat = CALLABLE_TO_FUNCPTR(foo);
+}

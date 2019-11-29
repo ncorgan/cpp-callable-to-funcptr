@@ -18,6 +18,7 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <cstring>
 #include <functional>
 #include <type_traits>
 
@@ -32,6 +33,15 @@ namespace detail
         constexpr auto hash = fnv1a_hash(type_name.size(), &type_name[0]);
 
         return (hash ^ _UniqueId);
+    }
+
+    constexpr hash_t hash_location(const char* file, hash_t line)
+    {
+        return fnv1a_hash(strlen(file), file)
+               ^ line
+               ^ (line << 16)
+               ^ (line << 32)
+               ^ (line << 48);
     }
 
     template <hash_t _Hash, typename _Res, typename... _Args>
