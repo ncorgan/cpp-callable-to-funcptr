@@ -8,20 +8,7 @@
 #ifndef CALLABLE_TO_FUNCPTR_HPP
 #define CALLABLE_TO_FUNCPTR_HPP
 
-// Allow the caller to put this in their own namespace.
-#ifdef CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
-
-#define BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE \
-    namespace CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE {
-#define END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE \
-    }
-
-#else
-
-#define BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
-#define END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
-
-#endif
+#include "detail/define_internal_macros.hpp"
 
 #include "detail/callable/callable.hpp"
 #include "detail/funcptr_helper.hpp"
