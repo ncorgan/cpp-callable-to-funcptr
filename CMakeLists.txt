@@ -23,6 +23,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+# For testing only, not a requirement for the module itself
 find_package(Boost 1.65)
 
 enable_testing()
