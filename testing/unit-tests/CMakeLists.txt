@@ -10,10 +10,13 @@ SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 ADD_SUBDIRECTORY(googletest/googletest)
 
 add_executable(callable_to_funcptr_test callable_to_funcptr_test.cpp)
-target_include_directories(callable_to_funcptr_test
-    PRIVATE ${CMAKE_SOURCE_DIR}/include
-    PRIVATE ${BOOST_INCLUDE_DIRS})
-target_link_libraries(callable_to_funcptr_test testlib gtest gtest_main)
+target_include_directories(callable_to_funcptr_test PRIVATE
+    ${BOOST_INCLUDE_DIRS})
+target_link_libraries(callable_to_funcptr_test
+    testlib
+    callable-to-funcptr
+    gtest
+    gtest_main)
 
 if(MSVC)
     add_test(
