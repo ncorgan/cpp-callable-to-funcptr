@@ -1,14 +1,11 @@
 /*
- * Copyright (c) 2019 Nicholas Corgan (n.corgan@gmail.com)
+ * Copyright (c) 2019,2022 Nicholas Corgan (n.corgan@gmail.com)
  *
  * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#ifndef CALLABLE_TO_FUNCPTR_HPP
-#define CALLABLE_TO_FUNCPTR_HPP
-
-#include "detail/define_internal_macros.hpp"
+#pragma once
 
 #include "detail/callable/callable.hpp"
 #include "detail/funcptr_helper.hpp"
@@ -16,7 +13,7 @@
 #include <cassert>
 #include <functional>
 
-BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
+namespace nc {
 
 template <size_t _UniqueId, typename _Callable>
 auto callable_to_funcptr(_Callable f)
@@ -37,10 +34,6 @@ auto callable_to_funcptr(_Callable f)
 }
 
 #define CALLABLE_TO_FUNCPTR(f) \
-    CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::callable_to_funcptr< \
-        CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::detail::hash_location(__FILE__, __LINE__), \
-        decltype(f)>(f)
+    nc::callable_to_funcptr<nc::detail::hash_location(__FILE__, __LINE__), decltype(f)>(f)
 
-END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
-
-#endif /* CALLABLE_TO_FUNCPTR_HPP */
+}

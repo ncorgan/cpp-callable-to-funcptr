@@ -32,19 +32,11 @@
 #ifndef NEARGYE_NAMEOF_HPP
 #define NEARGYE_NAMEOF_HPP
 
-#ifndef CALLABLE_TO_FUNCPTR_HPP
-#error Do not include this file directly. Include <callable_to_funcptr/callable_to_funcptr.hpp> instead.
-#endif
-
-#include "check_header.hpp"
-
 #include <array>
 #include <cstddef>
 #include <limits>
 #include <type_traits>
 #include <string_view>
-
-BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 // Enum value must be greater or equals than NAMEOF_ENUM_RANGE_MIN. By default NAMEOF_ENUM_RANGE_MIN = -128.
 // If need another min range for all enum types by default, redefine the macro NAMEOF_ENUM_RANGE_MIN.
@@ -260,28 +252,26 @@ template <typename T>
 
 } // namespace nameof
 
-END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
-
 // Obtains simple (unqualified) string name of variable, function, enum, macro.
-#define NAMEOF(...) CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::nameof::detail::nameof_impl<::nameof::detail::check_t<decltype(__VA_ARGS__)>>(#__VA_ARGS__, false)
+#define NAMEOF(...) nameof::detail::nameof_impl<::nameof::detail::check_t<decltype(__VA_ARGS__)>>(#__VA_ARGS__, false)
 
 // Obtains simple (unqualified) full (with template suffix) string name of variable, function, enum, macro.
-#define NAMEOF_FULL(...) CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::nameof::detail::nameof_impl<::nameof::detail::check_t<decltype(__VA_ARGS__)>>(#__VA_ARGS__, true)
+#define NAMEOF_FULL(...) nameof::detail::nameof_impl<::nameof::detail::check_t<decltype(__VA_ARGS__)>>(#__VA_ARGS__, true)
 
 // Obtains raw string name of variable, function, enum, macro.
-#define NAMEOF_RAW(...) CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::nameof::detail::nameof_raw_impl<::nameof::detail::check_t<decltype(__VA_ARGS__)>>(#__VA_ARGS__)
+#define NAMEOF_RAW(...) nameof::detail::nameof_raw_impl<::nameof::detail::check_t<decltype(__VA_ARGS__)>>(#__VA_ARGS__)
 
 // Obtains simple (unqualified) string enum name of enum variable.
-#define NAMEOF_ENUM(...) CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::nameof::nameof_enum<decltype(__VA_ARGS__)>(__VA_ARGS__)
+#define NAMEOF_ENUM(...) nameof::nameof_enum<decltype(__VA_ARGS__)>(__VA_ARGS__)
 
 // Obtains simple (unqualified) string enum name of static storage enum variable.
 // This version is much lighter on the compile times and is not restricted to the enum_range limitation.
-#define NAMEOF_CONST_ENUM(...) CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::nameof::nameof_enum<__VA_ARGS__>()
+#define NAMEOF_CONST_ENUM(...) nameof::nameof_enum<__VA_ARGS__>()
 
 // Obtains string name of type.
-#define NAMEOF_TYPE(...) CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::nameof::nameof_type<__VA_ARGS__>()
+#define NAMEOF_TYPE(...) nameof::nameof_type<__VA_ARGS__>()
 
 // Obtains string name of variable type.
-#define NAMEOF_VAR_TYPE(...) CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE::nameof::nameof_type<decltype(__VA_ARGS__)>()
+#define NAMEOF_VAR_TYPE(...) nameof::nameof_type<decltype(__VA_ARGS__)>()
 
 #endif // NEARGYE_NAMEOF_HPP

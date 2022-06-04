@@ -8,15 +8,7 @@
 #if !defined(CALLABLE_HELPERS_HPP_INCLUDED)
 #define CALLABLE_HELPERS_HPP_INCLUDED
 
-#ifndef CALLABLE_TO_FUNCPTR_HPP
-#error Do not include this file directly. Include <callable_to_funcptr/callable_to_funcptr.hpp> instead.
-#endif
-
-#include "../check_header.hpp"
-
 #include <cstddef>
-
-BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 namespace detail {
 
@@ -75,8 +67,6 @@ struct types_has<Q, T, Ts...> : types_has<Q, Ts...> {
 
 
 } // namespace detail
-
-END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 #endif // CALLABLE_HELPERS_HPP_INCLUDED
 

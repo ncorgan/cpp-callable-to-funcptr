@@ -1,11 +1,10 @@
 /*
- * Copyright (c) 2019 Nicholas Corgan (n.corgan@gmail.com)
+ * Copyright (c) 2019,2022 Nicholas Corgan (n.corgan@gmail.com)
  *
  * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
  * or copy at http://opensource.org/licenses/MIT)
  */
-#ifndef TESTLIB_TESTLIB_H
-#define TESTLIB_TESTLIB_H
+#pragma once
 
 #include "config.h"
 
@@ -44,5 +43,3 @@ TESTLIB_API int testlib_call_complex_callback(
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* TESTLIB_TESTLIB_H */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Nicholas Corgan (n.corgan@gmail.com)
+ * Copyright (c) 2019,2022 Nicholas Corgan (n.corgan@gmail.com)
  *
  * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
  * or copy at http://opensource.org/licenses/MIT)
@@ -80,8 +80,8 @@ class conversion_test: public ::testing::Test
             }
 
             test_setting_testlib_callbacks_common(
-                test_namespace::callable_to_funcptr<0>(simple_callback_input),
-                test_namespace::callable_to_funcptr<1>(complex_callback_input));
+                nc::callable_to_funcptr<0>(simple_callback_input),
+                nc::callable_to_funcptr<1>(complex_callback_input));
         }
 
         template <typename S, typename C>
@@ -97,8 +97,8 @@ class conversion_test: public ::testing::Test
             }
 
             test_setting_testlib_callbacks_common(
-                test_namespace::callable_to_funcptr<0, S, void>(simple_callback_input),
-                test_namespace::callable_to_funcptr<1, C, int, const char*, double, void*>(complex_callback_input));
+                nc::callable_to_funcptr<0, S, void>(simple_callback_input),
+                nc::callable_to_funcptr<1, C, int, const char*, double, void*>(complex_callback_input));
         }
 
         void testlib_simple_callback_member_function()
@@ -127,8 +127,8 @@ void test_inputs_use_same_template(T1 t1, T2 t2)
 
     // As a sanity check, make sure the compile-time hashing matches, or this
     // test has no point.
-    using test_namespace::detail::template_hash;
-    using test_namespace::detail::hash_t;
+    using nc::detail::template_hash;
+    using nc::detail::hash_t;
 
     const hash_t hash1 = template_hash<ID, decltype(t1)>();
     const hash_t hash2 = template_hash<ID, decltype(t2)>();
@@ -310,13 +310,13 @@ TEST(callable_to_funcptr_test, test_changing_function)
     int output1 = 0;
     int output2 = 0;
 
-    test_namespace::callable_to_funcptr<template_id>(get_one_and_two)(
+    nc::callable_to_funcptr<template_id>(get_one_and_two)(
         &output1,
         &output2);
     ASSERT_EQ(1, output1);
     ASSERT_EQ(2, output2);
 
-    test_namespace::callable_to_funcptr<template_id>(get_three_and_four)(
+    nc::callable_to_funcptr<template_id>(get_three_and_four)(
         &output1,
         &output2);
     ASSERT_EQ(3, output1);
@@ -325,14 +325,14 @@ TEST(callable_to_funcptr_test, test_changing_function)
 
 static void thread1_fcn(int* p_output1, int* p_output2)
 {
-    test_namespace::callable_to_funcptr<template_id>(get_one_and_two)(
+    nc::callable_to_funcptr<template_id>(get_one_and_two)(
         p_output1,
         p_output2);
 }
 
 static void thread2_fcn(int* p_output1, int* p_output2)
 {
-    test_namespace::callable_to_funcptr<template_id>(get_three_and_four)(
+    nc::callable_to_funcptr<template_id>(get_three_and_four)(
         p_output1,
         p_output2);
 }

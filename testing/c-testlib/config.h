@@ -1,11 +1,10 @@
 /*
- * Copyright (c) 2019 Nicholas Corgan (n.corgan@gmail.com)
+ * Copyright (c) 2019,2022 Nicholas Corgan (n.corgan@gmail.com)
  *
  * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
  * or copy at http://opensource.org/licenses/MIT)
  */
-#ifndef TESTLIB_CONFIG_H
-#define TESTLIB_CONFIG_H
+#pragma once
 
 /***************************************************************************
  * Define cross-platform macros
@@ -36,5 +35,3 @@
 #elif defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
 #    define TESTLIB_PLATFORM_MACOS
 #endif
-
-#endif /* TESTLIB_CONFIG_H */

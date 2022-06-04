@@ -8,16 +8,8 @@
 #if !defined(CALLABLE_FUNCTION_HPP_INCLUDED)
 #define CALLABLE_FUNCTION_HPP_INCLUDED
 
-#ifndef CALLABLE_TO_FUNCPTR_HPP
-#error Do not include this file directly. Include <callable_to_funcptr/callable_to_funcptr.hpp> instead.
-#endif
-
-#include "../check_header.hpp"
-
 #include "helpers.hpp"
 #include <cstddef>
-
-BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 namespace detail {
 
@@ -52,8 +44,6 @@ struct function_traits : detail::function_traits<detail::remove_cvref_t<Func>> {
 template<typename Func>
 struct function_traits<Func*> : detail::function_traits<detail::remove_cvref_t<Func>> {
 };
-
-END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 #endif // CALLABLE_FUNCTION_HPP_INCLUDED
 

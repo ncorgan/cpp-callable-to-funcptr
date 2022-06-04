@@ -5,18 +5,11 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#ifndef CALLABLE_TO_FUNCPTR_HASH_HPP
-#define CALLABLE_TO_FUNCPTR_HASH_HPP
-
-#ifndef CALLABLE_TO_FUNCPTR_HPP
-#error Do not include this file directly. Include <callable_to_funcptr/callable_to_funcptr.hpp> instead.
-#endif
-
-#include "check_header.hpp"
+#pragma once
 
 #include <cstdint>
 
-BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
+namespace nc {
 
 namespace detail
 {
@@ -40,6 +33,4 @@ namespace detail
     }
 }
 
-END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
-
-#endif /* CALLABLE_TO_FUNCPTR_HASH_HPP */
+}

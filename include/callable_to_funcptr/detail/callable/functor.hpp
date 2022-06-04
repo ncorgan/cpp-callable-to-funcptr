@@ -8,17 +8,9 @@
 #if !defined(CALLABLE_FUNCTOR_HPP_INCLUDED)
 #define CALLABLE_FUNCTOR_HPP_INCLUDED
 
-#ifndef CALLABLE_TO_FUNCPTR_HPP
-#error Do not include this file directly. Include <callable_to_funcptr/callable_to_funcptr.hpp> instead.
-#endif
-
-#include "../check_header.hpp"
-
 #include "helpers.hpp"
 #include "function.hpp"
 #include "member_function.hpp"
-
-BEGIN_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 namespace detail {
 
@@ -37,8 +29,6 @@ struct functor_traits : function_traits<typename call_operator_traits<Class>::fu
 template<typename Class>
 struct functor_traits : detail::functor_traits<detail::remove_cvref_t<Class>> {
 };
-
-END_CALLABLE_TO_FUNCPTR_CLIENT_NAMESPACE
 
 #endif // CALLABLE_FUNCTOR_HPP_INCLUDED
 
