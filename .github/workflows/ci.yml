@@ -1,0 +1,177 @@
+name: CI
+on: [push, pull_request]
+jobs:
+    linux-ci:
+        name: Linux
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - cc: gcc-9
+                      cxx: g++-9
+                      build_type: Release
+                    - cc: gcc-9
+                      cxx: g++-9
+                      build_type: Debug
+
+                    - cc: gcc-10
+                      cxx: g++-10
+                      build_type: Release
+                    - cc: gcc-10
+                      cxx: g++-10
+                      build_type: Debug
+
+                    - cc: clang-10
+                      cxx: clang++-10
+                      build_type: Release
+                    - cc: clang-10
+                      cxx: clang++-10
+                      build_type: Debug
+
+                    - cc: clang-11
+                      cxx: clang++-11
+                      build_type: Release
+                    - cc: clang-11
+                      cxx: clang++-11
+                      build_type: Debug
+
+                    - cc: clang-12
+                      cxx: clang++-12
+                      build_type: Release
+                    - cc: clang-12
+                      cxx: clang++-12
+                      build_type: Debug
+        env:
+            CC: ${{matrix.cc}}
+            CXX: ${{matrix.cxx}}
+        steps:
+          - uses: actions/checkout@v2
+          - name: Install dependencies
+            run: |
+                sudo apt install -y cmake libboost-dev
+          - name: Build
+            run: |
+                mkdir -p ${{github.workspace}}/build
+                cd ${{github.workspace}}/build
+                cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
+                make
+          - name: Install
+            run: |
+                cd ${{github.workspace}}/build
+                sudo make install
+                sudo ldconfig
+          - name: Run unit tests
+            run: |
+                cd ${{github.workspace}}/build
+                ctest --output-on-failure
+    osx-ci:
+        name: OS X
+        runs-on: macos-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - cc: gcc-9
+                      cxx: g++-9
+                      build_type: Release
+                    - cc: gcc-9
+                      cxx: g++-9
+                      build_type: Debug
+                    - cc: gcc-10
+                      cxx: g++-10
+                      build_type: Release
+                    - cc: gcc-10
+                      cxx: g++-10
+                      build_type: Debug
+                    - cc: gcc-11
+                      cxx: g++-11
+                      build_type: Release
+                    - cc: gcc-11
+                      cxx: g++-11
+                      build_type: Debug
+                    - cc: clang
+                      cxx: clang++
+                      build_type: Release
+                    - cc: clang
+                      cxx: clang++
+                      build_type: Debug
+        env:
+            CC: ${{matrix.cc}}
+            CXX: ${{matrix.cxx}}
+        steps:
+          - uses: actions/checkout@v2
+          - name: Install dependencies
+            run: |
+                brew install cmake boost
+          - name: Build
+            run: |
+                mkdir -p ${{github.workspace}}/build
+                cd ${{github.workspace}}/build
+                cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
+                make
+          - name: Install
+            run: |
+                cd ${{github.workspace}}/build
+                sudo make install
+          - name: Run unit tests
+            run: |
+                cd ${{github.workspace}}/build
+                ctest --output-on-failure
+    windows-ci:
+        name: Windows
+        runs-on: windows-2019
+        strategy:
+            fail-fast: false
+            matrix:
+                # Note: keeping cmake_config general enough for non-MSVC later
+                include:
+                    - cmake_config: -G "Visual Studio 14 2015" -A "Win32"
+                      arch: win32
+                      build_type: Release
+                    - cmake_config: -G "Visual Studio 14 2015" -A "Win32"
+                      arch: win32
+                      build_type: Debug
+
+                    - cmake_config: -G "Visual Studio 14 2015" -A "x64"
+                      arch: x64
+                      build_type: Release
+                    - cmake_config: -G "Visual Studio 14 2015" -A "x64"
+                      arch: x64
+                      build_type: Debug
+
+                      # Note: skipping VS2017, possible bugginess in parallel installs
+
+                    - cmake_config: -G "Visual Studio 16 2019" -A "Win32"
+                      arch: win32
+                      build_type: Release
+                    - cmake_config: -G "Visual Studio 16 2019" -A "Win32"
+                      arch: win32
+                      build_type: Debug
+
+                    - cmake_config: -G "Visual Studio 16 2019" -A "x64"
+                      arch: x64
+                      build_type: Release
+                    - cmake_config: -G "Visual Studio 16 2019" -A "x64"
+                      arch: x64
+                      build_type: Debug
+        steps:
+          - uses: actions/checkout@v2
+          - uses: ilammy/msvc-dev-cmd@v1
+            with:
+                arch: ${{matrix.arch}}
+# TODO: install Boost
+          - name: Build
+            run: |
+                mkdir ${{github.workspace}}\build
+                cd ${{github.workspace}}\build
+                cmake ${{matrix.cmake_config}} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
+                cmake --build . --config ${{matrix.build_type}}
+          - name: Install
+            run: |
+                cd ${{github.workspace}}\build
+                cmake --install . --config ${{matrix.build_type}}
+          - name: Run unit tests
+            run: |
+                cd ${{github.workspace}}\build
+                ctest --output-on-failure -C ${{matrix.build_type}}
