@@ -49,6 +49,7 @@ jobs:
           - uses: actions/checkout@v2
           - name: Install dependencies
             run: |
+                git submodule update --init --recursive
                 sudo apt install -y cmake libboost-dev
           - name: Build
             run: |
@@ -104,6 +105,7 @@ jobs:
           - name: Install dependencies
             run: |
                 brew install cmake boost
+                git submodule update --init --recursive
           - name: Build
             run: |
                 mkdir -p ${{github.workspace}}/build
@@ -161,6 +163,9 @@ jobs:
             with:
                 arch: ${{matrix.arch}}
 # TODO: install Boost
+          - name: Install dependencies
+            run: |
+                git submodule update --init --recursive
           - name: Build
             run: |
                 mkdir ${{github.workspace}}\build
