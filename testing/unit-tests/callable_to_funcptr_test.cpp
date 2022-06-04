@@ -377,5 +377,5 @@ TEST(callable_to_funcptr_test, test_location_macro)
         return;
     };
 
-    auto wat = CALLABLE_TO_FUNCPTR(foo);
+    auto wat = NC_CALLABLE_TO_FUNCPTR(foo);
 }

@@ -33,7 +33,7 @@ auto callable_to_funcptr(_Callable f)
     return detail::stdfunction_to_funcptr<detail::template_hash<_UniqueId, _Callable>()>(std::move(func));
 }
 
-#define CALLABLE_TO_FUNCPTR(f) \
+#define NC_CALLABLE_TO_FUNCPTR(f) \
     nc::callable_to_funcptr<nc::detail::hash_location(__FILE__, __LINE__), decltype(f)>(f)
 
 }
