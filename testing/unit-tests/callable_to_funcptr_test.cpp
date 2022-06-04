@@ -5,7 +5,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <callable_to_funcptr/callable_to_funcptr.hpp>
+#include <nc/callable_to_funcptr.hpp>
 
 #include "testlib.h"
 
